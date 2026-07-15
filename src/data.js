@@ -12,7 +12,7 @@ export const profile = {
   github: 'https://github.com/kienduc10012004',
   linkedin: '',
   avatar: 'images/avatar.png',
-  cvFile: 'CV-Intern Front End Dev-Le Duc Kien.pdf',
+  cvFile: 'cv-le-duc-kien.pdf',
   bio: `Mình là sinh viên năm cuối ngành Công nghệ Thông tin tại Trường Đại học Công nghiệp TP. Hồ Chí Minh, định hướng phát triển chuyên sâu về Front-end.
 Mình yêu thích việc xây dựng những giao diện responsive, dễ sử dụng và có hiệu năng tốt với ReactJS, NextJS, TypeScript, JavaScript và Tailwind CSS.
 Qua các dự án học tập, mình cũng có cơ hội làm việc với Node.js, ExpressJS, MongoDB và các công cụ phát triển hiện đại.

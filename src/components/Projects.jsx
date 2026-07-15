@@ -5,6 +5,7 @@ import { ChevronDownIcon, ExternalLinkIcon } from './Icons'
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`
 const CARD_GAP = 28
+const DRAG_ACTIVATION_DISTANCE = 10
 
 export default function Projects() {
   const [preview, setPreview] = useState(null)
@@ -17,6 +18,7 @@ export default function Projects() {
   const viewportRef = useRef(null)
   const dragStartRef = useRef(null)
   const didDragRef = useRef(false)
+  const interactionRef = useRef(false)
 
   const maxIndex = Math.max(0, projectsData.length - cardsPerView)
   const cardWidth = `calc((100% - ${(cardsPerView - 1) * CARD_GAP}px) / ${cardsPerView})`
@@ -42,6 +44,7 @@ export default function Projects() {
   useEffect(() => {
     if (isDragging || isHovered || preview || maxIndex === 0) return
     const timer = window.setInterval(() => {
+      if (interactionRef.current) return
       setCurrent((index) => (index >= maxIndex ? 0 : index + 1))
     }, 4000)
     return () => window.clearInterval(timer)
@@ -65,17 +68,18 @@ export default function Projects() {
     if (event.button !== 0) return
     dragStartRef.current = event.clientX
     didDragRef.current = false
+    interactionRef.current = true
     setIsDragging(true)
   }
 
   const handlePointerMove = (event) => {
     if (dragStartRef.current === null) return
     const distance = event.clientX - dragStartRef.current
-    if (Math.abs(distance) > 6 && !didDragRef.current) {
+    if (Math.abs(distance) >= DRAG_ACTIVATION_DISTANCE && !didDragRef.current) {
       didDragRef.current = true
       event.currentTarget.setPointerCapture(event.pointerId)
     }
-    setDragOffset(distance)
+    if (didDragRef.current) setDragOffset(distance)
   }
 
   const finishDrag = (event) => {
@@ -83,10 +87,11 @@ export default function Projects() {
     const distance = event.clientX - dragStartRef.current
     const threshold = Math.min(70, slideStep * 0.18)
 
-    if (distance < -threshold) goNext()
-    if (distance > threshold) goPrevious()
+    if (didDragRef.current && distance < -threshold) goNext()
+    if (didDragRef.current && distance > threshold) goPrevious()
 
     dragStartRef.current = null
+    interactionRef.current = false
     setDragOffset(0)
     setIsDragging(false)
     window.setTimeout(() => { didDragRef.current = false }, 0)
@@ -101,6 +106,15 @@ export default function Projects() {
   const cancelIdleDrag = () => {
     if (dragStartRef.current === null || didDragRef.current) return
     dragStartRef.current = null
+    interactionRef.current = false
+    setDragOffset(0)
+    setIsDragging(false)
+  }
+
+  const cancelDrag = () => {
+    dragStartRef.current = null
+    interactionRef.current = false
+    didDragRef.current = false
     setDragOffset(0)
     setIsDragging(false)
   }
@@ -132,7 +146,7 @@ export default function Projects() {
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={finishDrag}
-            onPointerCancel={finishDrag}
+            onPointerCancel={cancelDrag}
             onPointerLeave={cancelIdleDrag}
             onClickCapture={preventClickAfterDrag}
             onMouseEnter={() => setIsHovered(true)}
@@ -143,7 +157,7 @@ export default function Projects() {
               style={{
                 gap: `${CARD_GAP}px`,
                 transform: `translate3d(${-current * slideStep + dragOffset}px, 0, 0)`,
-                transition: isDragging ? 'none' : 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1)',
+                transition: isDragging ? 'none' : 'transform 850ms cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             >
               {projectsData.map((project, index) => (
