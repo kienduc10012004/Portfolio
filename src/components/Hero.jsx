@@ -25,7 +25,8 @@ function useTypingText(text, speed = 32) {
 
 export default function Hero() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  const cvUrl = `${import.meta.env.BASE_URL}${profile.cvFile}`
+  // Version the public URL so browsers do not reuse a previously cached 404.
+  const cvUrl = `${import.meta.env.BASE_URL}${profile.cvFile}?v=20260715-3`
   const avatarUrl = `${import.meta.env.BASE_URL}${profile.avatar}`
   const emailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}&su=${encodeURIComponent('Liên hệ từ Portfolio của Lê Đức Kiên')}`
   const typedIntro = useTypingText(intro)
