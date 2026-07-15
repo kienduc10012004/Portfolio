@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0b0f14;
+  color: #e6edf3;
+  font-family: 'Inter', ui-sans-serif, system-ui;
+}
+
+.slider-viewport {
+  touch-action: pan-y;
+}
+
+::selection {
+  background-color: #c297ff;
+  color: #0b0f14;
+}
+
+/* thin code-editor style scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #11161d;
+}
+::-webkit-scrollbar-thumb {
+  background: #232b36;
+  border-radius: 999px;
+  border: 2px solid #11161d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2e3947;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Reveal-on-scroll. Keep the keyframes next to the class that uses them so
+   Tailwind's class scanner cannot omit the animation from the final CSS. */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes avatarFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(1deg);
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 45% { opacity: 1; }
+  46%, 100% { opacity: 0; }
+}
+
+@keyframes lightboxEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes imageZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-copy {
+  animation: heroEnter 0.8s ease-out both;
+}
+
+.hero-card {
+  animation: heroEnter 0.8s 0.18s ease-out both;
+}
+
+.avatar-frame {
+  animation: avatarFloat 4.5s ease-in-out infinite;
+}
+
+.typing-cursor {
+  animation: cursorBlink 0.8s steps(1) infinite;
+}
+
+.project-card {
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  border-color: rgb(255 137 102 / 0.65);
+  box-shadow: 0 22px 50px rgb(0 0 0 / 0.28), 0 8px 24px rgb(255 137 102 / 0.08);
+}
+
+.lightbox {
+  animation: lightboxEnter 0.2s ease-out both;
+}
+
+.lightbox-image {
+  animation: imageZoom 0.3s ease-out both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: riseIn 0.7s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
