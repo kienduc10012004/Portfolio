@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Production builds and generated files
+dist/
+dist-ssr/
+.vite/
+coverage/
+
+# Environment variables (keep an example file if needed)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and local tooling
+.vscode/
+.idea/
+.agents/
+.codex/
+*.swp
+*.swo
+*.tmp
+*.tsbuildinfo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
