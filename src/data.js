@@ -91,7 +91,7 @@ export const skillsData = {
   hard: [
     { name: 'Front End', level: 'sử dụng thành thạo', techs: ['HTML', 'CSS3', 'JavaScript (ES6)', 'ReactJS', 'TailwindCSS'] },
     { name: 'Back End', level: 'có tiếp xúc và sử dụng được', techs: ['NodeJS', 'ExpressJS', 'MongoDB', 'Java'] },
-    { name: 'Công cụ', level: 'thành thạo thao tác', techs: ['GitHub', 'VS Code', 'Eclipse', 'Docker', 'Figma'] },
+    { name: 'Công cụ', level: 'thành thạo thao tác', techs: ['GitHub', 'VS Code', 'Eclipse', 'Figma'] },
   ],
   soft: ['Giao tiếp', 'Làm việc nhóm', 'Đọc tài liệu tiếng Anh', 'Đọc hiểu code'],
 }

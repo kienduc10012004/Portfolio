@@ -12,11 +12,13 @@ export default function Projects() {
   const [current, setCurrent] = useState(0)
   const [cardsPerView, setCardsPerView] = useState(1)
   const [slideStep, setSlideStep] = useState(0)
-  const [dragOffset, setDragOffset] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const viewportRef = useRef(null)
+  const trackRef = useRef(null)
   const dragStartRef = useRef(null)
+  const dragOffsetRef = useRef(0)
+  const animationFrameRef = useRef(null)
   const didDragRef = useRef(false)
   const interactionRef = useRef(false)
 
@@ -39,6 +41,12 @@ export default function Projects() {
     const observer = new ResizeObserver(measure)
     observer.observe(viewport)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => () => {
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current)
+    }
   }, [])
 
   useEffect(() => {
@@ -66,33 +74,64 @@ export default function Projects() {
 
   const handlePointerDown = (event) => {
     if (event.button !== 0) return
-    dragStartRef.current = event.clientX
+    dragStartRef.current = { x: event.clientX, y: event.clientY }
+    dragOffsetRef.current = 0
     didDragRef.current = false
     interactionRef.current = true
-    setIsDragging(true)
   }
 
   const handlePointerMove = (event) => {
     if (dragStartRef.current === null) return
-    const distance = event.clientX - dragStartRef.current
+    const distance = event.clientX - dragStartRef.current.x
+    const verticalDistance = event.clientY - dragStartRef.current.y
+
+    if (!didDragRef.current && Math.abs(verticalDistance) > Math.abs(distance)) return
+
     if (Math.abs(distance) >= DRAG_ACTIVATION_DISTANCE && !didDragRef.current) {
       didDragRef.current = true
       event.currentTarget.setPointerCapture(event.pointerId)
+      if (trackRef.current) trackRef.current.style.transition = 'none'
+      setIsDragging(true)
     }
-    if (didDragRef.current) setDragOffset(distance)
+
+    if (didDragRef.current) {
+      dragOffsetRef.current = distance
+      if (animationFrameRef.current !== null) return
+
+      animationFrameRef.current = window.requestAnimationFrame(() => {
+        animationFrameRef.current = null
+        if (!trackRef.current) return
+        trackRef.current.style.transform = `translate3d(${-current * slideStep + dragOffsetRef.current}px, 0, 0)`
+      })
+    }
   }
 
   const finishDrag = (event) => {
     if (dragStartRef.current === null) return
-    const distance = event.clientX - dragStartRef.current
+    const distance = event.clientX - dragStartRef.current.x
     const threshold = Math.min(70, slideStep * 0.18)
+    let targetIndex = current
 
-    if (didDragRef.current && distance < -threshold) goNext()
-    if (didDragRef.current && distance > threshold) goPrevious()
+    if (didDragRef.current && distance < -threshold) {
+      targetIndex = Math.min(maxIndex, current + 1)
+    }
+    if (didDragRef.current && distance > threshold) {
+      targetIndex = Math.max(0, current - 1)
+    }
+
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'transform 480ms cubic-bezier(0.22, 1, 0.36, 1)'
+      trackRef.current.style.transform = `translate3d(${-targetIndex * slideStep}px, 0, 0)`
+    }
 
     dragStartRef.current = null
     interactionRef.current = false
-    setDragOffset(0)
+    dragOffsetRef.current = 0
+    setCurrent(targetIndex)
     setIsDragging(false)
     window.setTimeout(() => { didDragRef.current = false }, 0)
   }
@@ -107,15 +146,21 @@ export default function Projects() {
     if (dragStartRef.current === null || didDragRef.current) return
     dragStartRef.current = null
     interactionRef.current = false
-    setDragOffset(0)
-    setIsDragging(false)
   }
 
   const cancelDrag = () => {
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
     dragStartRef.current = null
     interactionRef.current = false
     didDragRef.current = false
-    setDragOffset(0)
+    dragOffsetRef.current = 0
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'transform 480ms cubic-bezier(0.22, 1, 0.36, 1)'
+      trackRef.current.style.transform = `translate3d(${-current * slideStep}px, 0, 0)`
+    }
     setIsDragging(false)
   }
 
@@ -153,11 +198,13 @@ export default function Projects() {
             onMouseLeave={() => setIsHovered(false)}
           >
             <div
+              ref={trackRef}
               className="flex"
               style={{
                 gap: `${CARD_GAP}px`,
-                transform: `translate3d(${-current * slideStep + dragOffset}px, 0, 0)`,
-                transition: isDragging ? 'none' : 'transform 850ms cubic-bezier(0.22, 1, 0.36, 1)',
+                transform: `translate3d(${-current * slideStep}px, 0, 0)`,
+                transition: isDragging ? 'none' : 'transform 480ms cubic-bezier(0.22, 1, 0.36, 1)',
+                willChange: isDragging ? 'transform' : 'auto',
               }}
             >
               {projectsData.map((project, index) => (

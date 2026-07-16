@@ -6,7 +6,7 @@ export default function Reveal({ children, delay = 0, className = '' }) {
     <div
       ref={ref}
       className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
-      style={{ animationDelay: visible ? `${delay}ms` : undefined }}
+      style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
     >
       {children}
     </div>

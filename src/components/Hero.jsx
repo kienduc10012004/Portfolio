@@ -77,7 +77,7 @@ export default function Hero() {
               onClick={() => scrollTo('contact')}
               className="rounded-lg border border-line px-6 py-3 font-semibold text-ink transition hover:-translate-y-0.5 hover:border-keyword hover:text-keyword"
             >
-              Liên hệ với mình
+              Liên hệ
             </button>
           </div>
         </div>

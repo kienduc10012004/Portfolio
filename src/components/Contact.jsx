@@ -6,7 +6,7 @@ export default function Contact() {
   const emailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}&su=${encodeURIComponent('Liên hệ từ Portfolio của Lê Đức Kiên')}`
   const links = [
     { label: 'Email', value: profile.email, href: emailUrl, Icon: MailIcon, color: 'hover:border-string hover:text-string' },
-    { label: 'Điện thoại', value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}`, Icon: PhoneIcon, color: 'hover:border-comment hover:text-comment' },
+    { label: 'Điện thoại - zalo', value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}`, Icon: PhoneIcon, color: 'hover:border-comment hover:text-comment' },
     { label: 'GitHub', value: profile.github.replace('https://', ''), href: profile.github, Icon: GithubIcon, color: 'hover:border-func hover:text-func' },
     profile.linkedin
       ? { label: 'LinkedIn', value: profile.linkedin.replace('https://', ''), href: profile.linkedin, Icon: LinkedinIcon, color: 'hover:border-keyword hover:text-keyword' }
@@ -18,7 +18,7 @@ export default function Contact() {
       <div className="mx-auto max-w-3xl text-center">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-comment">Kết nối</p>
-          <h2 className="mt-3 text-3xl font-bold text-ink sm:text-4xl">Liên hệ với mình</h2>
+          <h2 className="mt-3 text-3xl font-bold text-ink sm:text-4xl">Thông tin liên hệ</h2>
           <p className="mt-4 text-muted">
             Mình luôn sẵn sàng lắng nghe cơ hội mới. Nhắn cho mình qua một trong các kênh dưới đây nhé!
           </p>
@@ -51,7 +51,7 @@ export default function Contact() {
             rel="noreferrer"
             className="mt-10 inline-block rounded-lg bg-accent px-8 py-3 text-sm font-semibold text-bg transition hover:brightness-110 hover:-translate-y-0.5"
           >
-            Gửi email cho mình
+            Gửi email
           </a>
         </Reveal>
       </div>
