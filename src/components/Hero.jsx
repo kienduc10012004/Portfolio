@@ -32,7 +32,7 @@ export default function Hero() {
   const typedIntro = useTypingText(intro)
 
   return (
-    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-bg px-6 pb-20 pt-36 sm:pt-40">
+    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-bg/55 px-6 pb-20 pt-36 sm:pt-40">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-32 top-16 h-96 w-96 rounded-full bg-keyword/15 blur-3xl animate-floatSlow" />
         <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-func/10 blur-3xl animate-floatSlower" />

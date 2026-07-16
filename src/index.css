@@ -12,6 +12,25 @@ body {
   font-family: 'Inter', ui-sans-serif, system-ui;
 }
 
+.portfolio-background {
+  position: relative;
+  isolation: isolate;
+}
+
+.portfolio-background::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  background-color: #0b0f14;
+  background-image:
+    linear-gradient(rgb(5 10 18 / 0.68), rgb(5 10 18 / 0.78)),
+    var(--portfolio-background-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .slider-viewport {
   touch-action: pan-y;
 }

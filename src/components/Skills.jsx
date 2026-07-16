@@ -10,7 +10,7 @@ const accentClasses = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="bg-bg px-6 py-20 sm:py-24">
+    <section id="skills" className="bg-bg/55 px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-string">Năng lực</p>

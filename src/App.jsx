@@ -11,6 +11,7 @@ import { sections } from './data'
 
 export default function App() {
   const [active, setActive] = useState('hero')
+  const backgroundUrl = `${import.meta.env.BASE_URL}images/background.png`
 
   useEffect(() => {
     if (!('IntersectionObserver' in window)) return
@@ -33,7 +34,10 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-bg text-ink selection:bg-keyword selection:text-bg">
+    <div
+      className="portfolio-background min-h-screen text-ink selection:bg-keyword selection:text-bg"
+      style={{ '--portfolio-background-image': `url("${backgroundUrl}")` }}
+    >
       <Navbar active={active} />
       <main>
         <Hero />
